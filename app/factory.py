@@ -8,15 +8,15 @@ from config import Config
 import os
 
 
-engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)        #database 
+engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)        # database 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def create_app():
     app = FastAPI(title="Task Management API")
 
-    # Add CORS middleware
-    app.add_middleware(
+   
+    app.add_middleware(              # add middleware
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
