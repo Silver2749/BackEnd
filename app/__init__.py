@@ -1,13 +1,9 @@
-from fastapi import FastAPI
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from config import Config
-
-engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+"""FastAPI Application Package"""
+from app.factory import create_app, engine, SessionLocal
 
 
 def get_db():
+    """Database session dependency"""
     db = SessionLocal()
     try:
         yield db
@@ -15,18 +11,4 @@ def get_db():
         db.close()
 
 
-def create_app():
-    """Application factory"""
-    app = FastAPI(title="Task Management API")
-
-    # Import models to create tables
-    from app.models import Base
-
-    Base.metadata.create_all(bind=engine)
-
-    # Register routes
-    from app.routes.task import task_router
-
-    app.include_router(task_router, prefix="/api/tasks", tags=["tasks"])
-
-    return app
+__all__ = ["create_app", "get_db", "engine", "SessionLocal"]
