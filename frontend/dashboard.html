@@ -372,14 +372,14 @@
         let user = JSON.parse(localStorage.getItem('user') || '{}');
         let editingTaskId = null;
 
-        // Check authentication
+        //check authentication
         if (!token) {
             window.location.href = '/';
         }
 
         document.getElementById('userEmail').textContent = user.email;
 
-        // Load tasks on page load
+        //load tasks on page load
         loadTasks();
 
         async function loadTasks() {
@@ -527,7 +527,7 @@
             return div.innerHTML;
         }
 
-        // Close modal when clicking outside
+        //close modal when clicking outside
         document.getElementById('taskModal').addEventListener('click', (e) => {
             if (e.target.id === 'taskModal') {
                 closeTaskModal();

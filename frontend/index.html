@@ -244,12 +244,12 @@
     <script>
         const API_BASE = 'http://localhost:6969';
 
-        // Tab switching
+        
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabName = btn.dataset.tab;
                 
-                // Hide all tabs
+                //hide all tabs
                 document.querySelectorAll('.tab-content').forEach(tab => {
                     tab.classList.remove('active');
                 });
@@ -257,13 +257,13 @@
                     b.classList.remove('active');
                 });
 
-                // Show selected tab
+                
                 document.getElementById(tabName).classList.add('active');
                 btn.classList.add('active');
             });
         });
 
-        // Login form
+       
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -309,7 +309,7 @@
             }
         });
 
-        // Register form
+        //register form
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('registerEmail').value;
@@ -366,7 +366,7 @@
             }
         });
 
-        // Check if already logged in
+        //check if already logged in
         if (localStorage.getItem('token')) {
             window.location.href = 'dashboard';
         }
