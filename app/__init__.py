@@ -1,7 +1,5 @@
 
 from app.factory import create_app, engine, SessionLocal
-
-
 def get_db():
     db = SessionLocal()
     try:

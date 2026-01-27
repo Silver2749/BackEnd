@@ -17,7 +17,7 @@ def create_access_token(user_id: int, expires_delta: timedelta = None) -> str:
     if expires_delta is None:
         expires_delta = timedelta(hours=24)
     
-    expire = datetime.utcnow() + expires_delta
+    expire = datetime.utcnow() + expires_delta  #depr.
     payload = {
         "user_id": user_id,
         "exp": expire

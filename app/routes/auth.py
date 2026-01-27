@@ -7,7 +7,7 @@ from app.utils import hash_password, verify_password, create_access_token, verif
 from app import get_db
 
 auth_router = APIRouter()
-security = HTTPBearer()
+security = HTTPBearer()  #auth.
 
 
 @auth_router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -23,7 +23,7 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
         )
     
 
-    hashed_password = hash_password(user_data.password)   #new user 
+    hashed_password = hash_password(user_data.password)   #new user. 
     new_user = User(
         email=user_data.email,
         password=hashed_password,
