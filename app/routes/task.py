@@ -14,8 +14,8 @@ def create_task(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Create a new task for the current user"""
-    task = Task(
+   
+    task = Task(         #new task
         title=task_data.title,
         description=task_data.description,
         user_id=current_user.id,
@@ -32,7 +32,7 @@ def get_tasks(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get all tasks for the current user"""
+   
     tasks = db.query(Task).filter(Task.user_id == current_user.id).all()
     return tasks
 
@@ -43,7 +43,7 @@ def get_task(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get a specific task by ID (only if it belongs to current user)"""
+   
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
         raise HTTPException(
@@ -68,8 +68,8 @@ def update_task(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Update a task (only if it belongs to current user)"""
-    task = db.query(Task).filter(Task.id == task_id).first()
+    
+    task = db.query(Task).filter(Task.id == task_id).first()    #update task
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -97,8 +97,8 @@ def delete_task(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Delete a task (only if it belongs to current user)"""
-    task = db.query(Task).filter(Task.id == task_id).first()
+   
+    task = db.query(Task).filter(Task.id == task_id).first()     #delete task
     if not task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

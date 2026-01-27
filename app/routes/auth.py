@@ -12,7 +12,7 @@ security = HTTPBearer()
 
 @auth_router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: UserRegister, db: Session = Depends(get_db)):
-    """Register a new user"""
+   #register a user 
     
     #user already exists
     existing_user = db.query(User).filter(User.email == user_data.email).first()
@@ -38,7 +38,7 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
 
 @auth_router.post("/login", status_code=status.HTTP_200_OK)
 def login(user_data: UserLogin, db: Session = Depends(get_db)):
-    """Login user and return JWT token"""
+    
     
     user = db.query(User).filter(User.email == user_data.email).first()     #check user by email
     if not user:
