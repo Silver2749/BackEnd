@@ -15,7 +15,7 @@ def create_task(
     db: Session = Depends(get_db),
 ):
    
-    task = Task(         #new task
+    task = Task(         #new task.
         title=task_data.title,
         description=task_data.description,
         user_id=current_user.id,
@@ -52,7 +52,7 @@ def get_task(
         )
     
     
-    if task.user_id != current_user.id:        #if task belongs to the user
+    if task.user_id != current_user.id:      #id belongs to user or not
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You don't have permission to access this task"
