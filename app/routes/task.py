@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from app.models import Task
+from app.models import Task, User
 from app.schemas import TaskCreate, TaskResponse
 from app import get_db
+from app.routes.auth import get_current_user
 
 task_router = APIRouter()
 
@@ -10,40 +11,109 @@ task_router = APIRouter()
 @task_router.post("/", status_code=status.HTTP_201_CREATED, response_model=dict)
 def create_task(
     task_data: TaskCreate,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    """Create a new task for the current user"""
     task = Task(
         title=task_data.title,
         description=task_data.description,
-        user_id=None,
+        user_id=current_user.id,
     )
     db.add(task)
     db.commit()
     db.refresh(task)
 
-    return {"msg": "Task created"}
+    return {"msg": "Task created", "task_id": task.id}
 
 
 @task_router.get("/", response_model=list[TaskResponse])
 def get_tasks(
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    tasks = db.query(Task).all()
+    """Get all tasks for the current user"""
+    tasks = db.query(Task).filter(Task.user_id == current_user.id).all()
     return tasks
+
+
+@task_router.get("/{task_id}", response_model=TaskResponse)
+def get_task(
+    task_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get a specific task by ID (only if it belongs to current user)"""
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+    
+    # Check if task belongs to current user
+    if task.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to access this task"
+        )
+    
+    return task
+
+
+@task_router.put("/{task_id}", response_model=TaskResponse)
+def update_task(
+    task_id: int,
+    task_data: TaskCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Update a task (only if it belongs to current user)"""
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+    
+    # Check if task belongs to current user
+    if task.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to update this task"
+        )
+    
+    task.title = task_data.title
+    task.description = task_data.description
+    db.commit()
+    db.refresh(task)
+    
+    return task
 
 
 @task_router.delete("/{task_id}", response_model=dict)
 def delete_task(
     task_id: int,
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    """Delete a task (only if it belongs to current user)"""
     task = db.query(Task).filter(Task.id == task_id).first()
     if not task:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Task not found"
+        )
+    
+    # Check if task belongs to current user
+    if task.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You don't have permission to delete this task"
         )
 
     db.delete(task)
     db.commit()
 
-    return {"msg": "Deleted"}
+    return {"msg": "Task deleted"}
+
