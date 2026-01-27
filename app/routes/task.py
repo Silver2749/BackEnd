@@ -51,8 +51,8 @@ def get_task(
             detail="Task not found"
         )
     
-    # Check if task belongs to current user
-    if task.user_id != current_user.id:
+    
+    if task.user_id != current_user.id:        #if task belongs to the user
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You don't have permission to access this task"
@@ -76,7 +76,7 @@ def update_task(
             detail="Task not found"
         )
     
-    # Check if task belongs to current user
+    
     if task.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -105,7 +105,7 @@ def delete_task(
             detail="Task not found"
         )
     
-    # Check if task belongs to current user
+  
     if task.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

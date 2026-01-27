@@ -13,7 +13,8 @@ security = HTTPBearer()
 @auth_router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: UserRegister, db: Session = Depends(get_db)):
     """Register a new user"""
-    # Check if user already exists
+    
+    #user already exists
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(
@@ -21,8 +22,8 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
             detail="Email already registered"
         )
     
-    # Create new user
-    hashed_password = hash_password(user_data.password)
+
+    hashed_password = hash_password(user_data.password)   #new user 
     new_user = User(
         email=user_data.email,
         password=hashed_password,
@@ -38,23 +39,23 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
 @auth_router.post("/login", status_code=status.HTTP_200_OK)
 def login(user_data: UserLogin, db: Session = Depends(get_db)):
     """Login user and return JWT token"""
-    # Find user by email
-    user = db.query(User).filter(User.email == user_data.email).first()
+    
+    user = db.query(User).filter(User.email == user_data.email).first()     #check user by email
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
     
-    # Verify password
-    if not verify_password(user_data.password, user.password):
+    
+    if not verify_password(user_data.password, user.password):         #verifies the user password
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
     
-    # Generate JWT token
-    access_token = create_access_token(user_id=user.id)
+  
+    access_token = create_access_token(user_id=user.id)      #token generator
     
     return {
         "access_token": access_token,
@@ -68,9 +69,8 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
 
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security), db: Session = Depends(get_db)) -> User:
-    """Dependency to get current authenticated user"""
     token = credentials.credentials
-    user_id = verify_token(token)
+    user_id = verify_token(token)            #get current user
     
     if user_id is None:
         raise HTTPException(

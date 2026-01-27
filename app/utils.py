@@ -4,19 +4,16 @@ from bcrypt import hashpw, checkpw, gensalt
 from config import Config
 
 
-def hash_password(password: str) -> str:
-    """Hash a password using bcrypt"""
+def hash_password(password: str) -> str:   
     salt = gensalt()
     return hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 
 def verify_password(password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash"""
     return checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 
 def create_access_token(user_id: int, expires_delta: timedelta = None) -> str:
-    """Create a JWT access token"""
     if expires_delta is None:
         expires_delta = timedelta(hours=24)
     
@@ -30,7 +27,6 @@ def create_access_token(user_id: int, expires_delta: timedelta = None) -> str:
 
 
 def verify_token(token: str) -> int:
-    """Verify JWT token and return user_id"""
     try:
         payload = jwt.decode(token, Config.JWT_SECRET_KEY, algorithms=["HS256"])
         user_id: int = payload.get("user_id")
