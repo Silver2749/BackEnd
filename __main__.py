@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 import time
 import os
 
-app = FastAPI()
+app = FastAPI()  #works well ig
 
 LOG_DIR = "logs"
 os.makedirs(LOG_DIR, exist_ok=True)
