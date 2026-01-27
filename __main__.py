@@ -24,9 +24,18 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 handler.setLevel(logging.INFO)
 
+
+root_logger = logging.getLogger()
+root_logger.handlers.clear()
+root_logger.setLevel(logging.INFO)
+root_logger.addHandler(handler)
+
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(formatter)
+console_handler.setLevel(logging.INFO)
+root_logger.addHandler(console_handler)
+
 logger = logging.getLogger("app")
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
 
 
 @app.middleware("http")
