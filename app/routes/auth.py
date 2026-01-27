@@ -7,7 +7,7 @@ from app.utils import hash_password, verify_password, create_access_token, verif
 from app import get_db
 
 auth_router = APIRouter()
-security = HTTPBearer()  #auth.
+security = HTTPBearer()  
 
 
 @auth_router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -40,7 +40,7 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
 def login(user_data: UserLogin, db: Session = Depends(get_db)):
     
     
-    user = db.query(User).filter(User.email == user_data.email).first()     #check user by email
+    user = db.query(User).filter(User.email == user_data.email).first()     
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
