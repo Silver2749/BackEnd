@@ -41,8 +41,13 @@ Follow these steps to set up and run the project locally.
    ```bash
    pip install -r requirements.txt
    ```
+   
+5. **install packages individually**
+   ```bash
+   pip install fastapi uvicorn sqlalchemy pydantic[email] jwt bcrypt --break-system-packages
+   ```
 
-5. **Run the application**
+6. **Run the application**
    ```bash
    uv run __main__.py
    ```
