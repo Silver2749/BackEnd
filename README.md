@@ -49,7 +49,7 @@ Follow these steps to set up and run the project locally.
 
 6. **Run the application**
    ```bash
-   uv run __main__.py
+  uvicorn main:app --host 127.0.0.1 --port 6969
    ```
 
 ## ⚠️ Important Note
