@@ -42,14 +42,14 @@ Follow these steps to set up and run the project locally.
    pip install -r requirements.txt
    ```
    
-5. **install packages individually**
+   Or install packages individually:
    ```bash
    pip install fastapi uvicorn sqlalchemy pydantic[email] jwt bcrypt --break-system-packages
    ```
 
-6. **Run the application**
+5. **Run the application**
    ```bash
-  uvicorn main:app --host 127.0.0.1 --port 6969
+   uvicorn main:app --host 127.0.0.1 --port 6969
    ```
 
 ## ⚠️ Important Note
@@ -79,8 +79,8 @@ BackEnd---/
 This project uses **FastAPI**, which comes with built-in **Swagger UI** for interactive API documentation.
 
 Once the application is running, you can access the API documentation at:
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
+- **Swagger UI**: `http://127.0.0.1:6969/docs`
+- **ReDoc**: `http://127.0.0.1:6969/redoc`
 
 These interfaces allow you to test and interact with the API endpoints directly from your browser.
 
@@ -104,4 +104,4 @@ This project is open source and available for educational purposes.
 
 ## 👤 Author
 
-[Silver2749/Shane Braganza](https://github.com/Silver2749)
+[Silver2749](https://github.com/Silver2749)
