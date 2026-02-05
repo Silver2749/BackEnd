@@ -104,4 +104,4 @@ This project is open source and available for educational purposes.
 
 ## 👤 Author
 
-[Silver2749](https://github.com/Silver2749)
+[Silver2749/Shane Braganza](https://github.com/Silver2749)
